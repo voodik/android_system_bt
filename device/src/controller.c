@@ -214,8 +214,8 @@ static future_t *start_up(void) {
   }
 #if (BLE_INCLUDED == TRUE)
   // read BLE offload features support from controller
-  response = AWAIT_COMMAND(packet_factory->make_ble_read_offload_features_support());
-  packet_parser->parse_ble_read_offload_features_response(response, &ble_offload_features_supported);
+//  response = AWAIT_COMMAND(packet_factory->make_ble_read_offload_features_support());
+//  packet_parser->parse_ble_read_offload_features_response(response, &ble_offload_features_supported);
 #endif
 #if (SC_MODE_INCLUDED == TRUE)
   if(ble_offload_features_supported) {
