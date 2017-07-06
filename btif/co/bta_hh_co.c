@@ -750,7 +750,7 @@ void bta_hh_co_get_rpt_rsp(UINT8 dev_handle, UINT8 status, UINT8 *p_rpt, UINT16 
     struct uhid_event ev;
     btif_hh_device_t *p_dev;
 
-    APPL_TRACE_VERBOSE("%s: dev_handle = %d", __func__, dev_handle);
+    APPL_TRACE_WARNING("%s: dev_handle = %d", __func__, dev_handle);
 
     p_dev = btif_hh_find_connected_dev_by_handle(dev_handle);
     if (p_dev == NULL) {
@@ -763,13 +763,14 @@ void bta_hh_co_get_rpt_rsp(UINT8 dev_handle, UINT8 status, UINT8 *p_rpt, UINT16 
         ev.type = UHID_GET_REPORT_REPLY;
         ev.u.get_report_reply.err = status;
         ev.u.get_report_reply.size = len;
+        ev.u.get_report_reply.id = 1;
         if (len > 0) {
             if (len > UHID_DATA_MAX) {
                 APPL_TRACE_WARNING("%s: Report size greater than allowed size",
                                    __func__);
                 return;
             }
-            memcpy(ev.u.get_report_reply.data, p_rpt, len);
+            memcpy(ev.u.get_report_reply.data, p_rpt + 9, len);
         }
         uhid_write(p_dev->fd, &ev);
     }
