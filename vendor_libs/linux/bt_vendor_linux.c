@@ -17,7 +17,7 @@
  *
  **********************************************************************/
 
-#define LOG_TAG "bt_vendor"
+#define LOG_TAG "bt_vendor_linux"
 
 #include <errno.h>
 #include <stdlib.h>
@@ -30,6 +30,7 @@
 #include <sys/ioctl.h>
 
 #include "hci/include/bt_vendor_lib.h"
+#include "osi/include/osi.h"
 #include "osi/include/log.h"
 #include "osi/include/properties.h"
 
@@ -401,6 +402,22 @@ static int bt_vendor_op(bt_vendor_opcode_t opcode, void *param)
   case BT_VND_OP_EPILOG:
     bt_vendor_callbacks->epilog_cb(BT_VND_OP_RESULT_SUCCESS);
     break;
+
+  case BT_VND_OP_A2DP_OFFLOAD_START:
+    break;
+
+  case BT_VND_OP_A2DP_OFFLOAD_STOP:
+    break;
+
+  case FM_VND_OP_POWER_CTRL:
+    break;
+
+  case BT_VND_OP_FM_USERIAL_OPEN:
+    break;
+
+  case BT_VND_OP_FM_USERIAL_CLOSE:
+    break;
+
   }
 
   LOG_INFO(LOG_TAG, "%s op %d retval %d", __func__, opcode, retval);
@@ -415,9 +432,15 @@ static void bt_vendor_cleanup(void)
   bt_vendor_callbacks = NULL;
 }
 
+static void ssr_cleanup (int reason)
+{
+  LOG_INFO(LOG_TAG, "%s", __func__);
+}
+
 EXPORT_SYMBOL const bt_vendor_interface_t BLUETOOTH_VENDOR_LIB_INTERFACE = {
   sizeof(bt_vendor_interface_t),
   bt_vendor_init,
   bt_vendor_op,
   bt_vendor_cleanup,
+  ssr_cleanup,
 };
